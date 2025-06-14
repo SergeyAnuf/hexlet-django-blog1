@@ -1,4 +1,4 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 
 # Create your views here.
 from django.views import View
@@ -49,6 +49,6 @@ class ArticleFormCreateView(View):
         form = ArticleForm(request.POST)
         if form.is_valid(): # Если данные корректные, то сохраняем данные формы
             form.save()
-            return redirect('articles') # Редирект на указанный маршрут
+            return redirect('/articles') # Редирект на указанный маршрут
         # Если данные некорректные, то возвращаем человека обратно на страницу с заполненной формой
         return render(request, 'articles/create.html', {'form': form})
