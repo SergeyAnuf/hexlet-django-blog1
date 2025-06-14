@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404
 
 # Create your views here.
 from django.views import View
-
+from .forms import ArticleForm
 from hexlet_django_blog.article.models import Article
 
 
@@ -37,3 +37,18 @@ class ArticleCommentsView(View):
         )
 
         return render(...)
+    
+
+class ArticleFormCreateView(View):
+    def get(self, request, *args, **kwargs):
+        form = ArticleForm()
+        return render(request, "articles/create.html", {"form": form})
+    
+
+    def post(self, request, *args, **kwargs):
+        form = ArticleForm(request.POST)
+        if form.is_valid(): # Если данные корректные, то сохраняем данные формы
+            form.save()
+            return redirect('articles') # Редирект на указанный маршрут
+        # Если данные некорректные, то возвращаем человека обратно на страницу с заполненной формой
+        return render(request, 'articles/create.html', {'form': form})
